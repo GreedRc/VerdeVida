@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supermercado Verde Vida</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://img.freepik.com/fotos-gratis/ingredientes-de-alimentos-saudaveis_144627-18336.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+    }
+    .bg-blur {
+      backdrop-filter: blur(5px);
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- Header -->
+  <header class="bg-green-700 text-white p-5 text-center text-3xl font-bold shadow-md">
+    🌿 Supermercado Verde Vida
+  </header>
+
+  <!-- Produtos -->
+  <main class="p-6 bg-blur rounded-xl m-6 shadow-lg">
+    <h2 class="text-2xl font-bold text-green-800 mb-4">🛒 Produtos Naturais</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <button onclick="adicionarCarrinho('Arroz Integral 5kg', 28)" 
+              class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg shadow-md">
+        🌾 Arroz Integral 5kg - R$ 28,00
+      </button>
+
+      <button onclick="adicionarCarrinho('Feijão Orgânico 1kg', 10)" 
+              class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg shadow-md">
+        🫘 Feijão Orgânico 1kg - R$ 10,00
+      </button>
+
+      <button onclick="adicionarCarrinho('Leite Vegetal 1L', 7)" 
+              class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg shadow-md">
+        🥛 Leite Vegetal 1L - R$ 7,00
+      </button>
+
+      <button onclick="adicionarCarrinho('Açúcar Mascavo 1kg', 12)" 
+              class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg shadow-md">
+        🍯 Açúcar Mascavo 1kg - R$ 12,00
+      </button>
+
+      <button onclick="adicionarCarrinho('Óleo de Coco 500ml', 20)" 
+              class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg shadow-md">
+        🥥 Óleo de Coco 500ml - R$ 20,00
+      </button>
+
+      <button onclick="adicionarCarrinho('Suco Natural 1L', 9)" 
+              class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg shadow-md">
+        🥤 Suco Natural 1L - R$ 9,00
+      </button>
+    </div>
+  </main>
+
+  <!-- Carrinho -->
+  <section class="p-6 bg-blur rounded-xl shadow-lg m-6">
+    <h2 class="text-2xl font-bold text-green-800 mb-4">🛍️ Carrinho de Compras</h2>
+    <ul id="carrinho" class="mb-4 text-gray-700"></ul>
+    <p class="font-semibold">Total: R$ <span id="total">0.00</span></p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-green-700 text-white text-center p-4">
+    <p>&copy; 2025 Supermercado Verde Vida 🌱 | Saúde e Sustentabilidade</p>
+  </footer>
+
+  <!-- Script Carrinho -->
+  <script>
+    let total = 0;
+    let itens = {};
+
+    function adicionarCarrinho(produto, preco) {
+      if (itens[produto]) {
+        itens[produto].quantidade++;
+      } else {
+        itens[produto] = { preco, quantidade: 1 };
+      }
+      total += preco;
+      atualizarCarrinho();
+    }
+
+    function removerCarrinho(produto) {
+      if (itens[produto]) {
+        total -= itens[produto].preco;
+        itens[produto].quantidade--;
+        if (itens[produto].quantidade === 0) {
+          delete itens[produto];
+        }
+        atualizarCarrinho();
+      }
+    }
+
+    function atualizarCarrinho() {
+      const lista = document.getElementById("carrinho");
+      lista.innerHTML = "";
+      for (let produto in itens) {
+        const item = itens[produto];
+        const li = document.createElement("li");
+        li.classList.add("flex", "justify-between", "items-center", "mb-2");
+
+        li.innerHTML = `
+          <span>${produto} (x${item.quantidade}) - R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+          <button onclick="removerCarrinho('${produto}')" 
+                  class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
+            Remover
+          </button>
+        `;
+        lista.appendChild(li);
+      }
+      document.getElementById("total").textContent = total.toFixed(2);
+    }
+  </script>
+</body>
+</html>
